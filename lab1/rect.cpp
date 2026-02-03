@@ -38,28 +38,22 @@ int Rect::get_right() const { return right; }
 int Rect::get_top() const { return top; }
 int Rect::get_bottom() const { return bottom; }
 
-void Rect::set_all(int l, int r, int t, int b)
+void Rect::set_all(int left, int right, int top, int bottom)
 {
-    left = l;
-    right = r;
-    top = t;
-    bottom = b;
+    this->left = left;
+    this->right = right;
+    this->top = top;
+    this->bottom = bottom;
 }
 
 void Rect::inflate(int amount)
 {
-    left -= amount;
-    right += amount;
-    top += amount;
-    bottom -= amount;
+    this->inflate(amount, amount, amount, amount);
 }
 
 void Rect::inflate(int dw, int dh)
 {
-    left -= dw;
-    right += dw;
-    top += dh;
-    bottom -= dh;
+    this->inflate(dw, dw, dh, dh);
 }
 
 void Rect::inflate(int d_left, int d_right, int d_top, int d_bottom)
@@ -95,14 +89,34 @@ int Rect::get_square() const
 
 void Rect::set_width(int new_width)
 {
-    int center_x = (left + right) / 2;
-    left = center_x - new_width / 2;
-    right = center_x + new_width / 2;
+    if (new_width < 0)
+    {
+        cout << "Ширина не может быть отирицательной!" << endl;
+        return;
+    }
+    right = left + new_width;
 }
 
 void Rect::set_height(int new_height)
 {
-    int center_y = (top + bottom) / 2;
-    top = center_y + new_height / 2;
-    bottom = center_y - new_height / 2;
+    if (new_height < 0)
+    {
+        cout << "Высота не может быть отирицательной!" << endl;
+        return;
+    }
+    top = bottom + new_height;
+}
+
+Rect bounding_rect(Rect r1, Rect r2)
+{
+    int left = min(r1.get_left(), r2.get_left());
+    int right = max(r1.get_right(), r2.get_right());
+    int top = max(r1.get_top(), r2.get_top());
+    int bottom = min(r1.get_bottom(), r2.get_bottom());
+    return Rect(left, right, top, bottom);
+}
+
+void print_rect(Rect &r)
+{
+    printf("Rect[L=%d, R=%d, T=%d, B=%d]\n", r.get_left(), r.get_right(), r.get_top(), r.get_bottom());
 }
