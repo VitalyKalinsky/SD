@@ -44,6 +44,10 @@
 
 #include <iostream>
 #include "rect.hpp"
+#include "barrel.hpp"
+#include "matrix.hpp"
+#include "mystring.hpp"
+
 using namespace std;
 int main()
 {
@@ -387,6 +391,19 @@ int main()
             water.<перелить из>(alch, ...);
         }
     } */
+    {
+        double volume = 100;
+        Barrel alch(volume, 96);
+        Barrel water(volume);
+        int i = 0;
+        for (; alch.get_alcohol_percent() > 50; i++)
+        {
+            alch.pour_from(water, 1);
+            water.pour_from(alch, 1);
+        }
+        printf("Потребовалось итераций: %d\n", i);
+    }
+    printf("-----------------\n");
 
     /**
      * Задание 2.2. Объект как математическая сущность.
@@ -423,7 +440,24 @@ int main()
      */
 
     {
+        Matrix fib(2, 2, 0.0);
+        Matrix current(2, 1, 0.0);
+        Matrix temp(2, 1, 0.0);
+
+        fib.set(0, 0, 1.0);
+        fib.set(0, 1, 1.0);
+        fib.set(1, 0, 1.0);
+        current.set(0, 0, 1.0);
+        printf("Числа Фибоначчи\n%d число: %.10g\n", 1, current.get(1, 0));
+
+        for (int i = 1; i < 40; i++)
+        {
+            printf("%d число: %.10g\n", i + 1, current.get(0, 0));
+            temp.copy(fib.multiply(current));
+            current.copy(temp);
+        }
     }
+    printf("-----------------\n");
 
     /**
      * Задание 2.3. Объект - обладатель ресурса.
@@ -462,18 +496,60 @@ int main()
      */
 
     {
+
+        MyString empty;
+        printf("1. Пустая строка: '%s', длина: %zu\n", empty.c_str(), empty.get_length());
+
+        MyString input;
+        printf("\n2. Введите строку: ");
+        input.read_line();
+        printf("Вы ввели: '%s'\n", input.c_str());
+        printf("Длина: %zu\n", input.get_length());
+
+        input.set_new_string("new input variable");
+        printf("3. После set_new_string(): '%s'\n", input.c_str());
+
+        printf("4. hello.get(0) = '%c'\n", input.get(0));
+        printf("   hello.get(10) = '%c'\n", input.get(10));
+
+        input.set(7, 'w');
+        printf("5. После set(7, 'w'): '%s'\n", input.c_str());
+
+        MyString copy = input;
+        printf("6. Копия input: '%s'\n", copy.c_str());
+
+        MyString assigned;
+        assigned = input;
+        printf("7. Присвоенная строка: '%s'\n", assigned.c_str());
+
+        input.set_new_string("new new input variable");
+        printf("8. После изменения оригинала:\n");
+        printf("   Оригинал: '%s'\n", input.c_str());
+        printf("   Копия: '%s' (должна остаться без изменений)\n", copy.c_str());
+
+        printf("9. Проверка границ (должен быть нуль-символ):\n");
+        printf("   get(-1) = '%c'\n", input.get(-1));
+        printf("   get(100) = '%c'\n", input.get(100));
+
+        MyString null_test(nullptr);
+        printf("10. Создано с nullptr: '%s', длина: %zu\n", null_test.c_str(), null_test.get_length());
     }
 
+    printf("-----------------\n");
     /**
      * Проверьте, что ваша строка корректно работает в следующих ситуациях.
      */
 
-    /* {
+    {
         MyString s1;
         MyString s2 = s1;
         MyString s3("This is my string");
         MyString s4 = s3;
-    } */
+        s1.print();
+        s2.print();
+        s3.print();
+        s4.print();
+    }
 
     /**
      * Задание 2.4. Объект-алгоритм.
