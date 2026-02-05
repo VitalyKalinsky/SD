@@ -47,6 +47,7 @@
 #include "barrel.hpp"
 #include "matrix.hpp"
 #include "mystring.hpp"
+#include "textwrapper.hpp"
 
 using namespace std;
 int main()
@@ -550,6 +551,7 @@ int main()
         s3.print();
         s4.print();
     }
+    printf("-----------------\n");
 
     /**
      * Задание 2.4. Объект-алгоритм.
@@ -570,13 +572,13 @@ int main()
      * Примерное использование класса приведено ниже.
      */
 
-    /* {
-        int line_width = 40;
+    {
+        int line_width = 3;
         MyString input;
         input.read_line();
         TextWrapper wrapper(input, line_width);
         wrapper.print_wrapped();
-    } */
+    }
 
     /**
      * Задание 3. Сборка проекта, Make-файлы.

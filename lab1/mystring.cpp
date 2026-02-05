@@ -97,6 +97,7 @@ char MyString::get(int i) const
 {
     if (i < 0 || i >= static_cast<int>(length))
     {
+        cout << "Out of bounds" << endl;
         return '\0';
     }
     return data[i];
@@ -141,40 +142,46 @@ void MyString::print() const
     cout << data << endl;
 }
 
-void MyString::read_line() {
+void MyString::read_line()
+{
     const size_t INITIAL_CAPACITY = 16;
     const size_t CHUNK_SIZE = 256;
-    
-    if (capacity < INITIAL_CAPACITY) {
+
+    if (capacity < INITIAL_CAPACITY)
+    {
         delete[] data;
         capacity = INITIAL_CAPACITY;
         data = new char[capacity];
     }
     cin.clear();
-    size_t pos = 0;    
-    while (true) {
-        if (pos + 1 >= capacity) {
+    size_t pos = 0;
+    while (true)
+    {
+        if (pos + 1 >= capacity)
+        {
             capacity = (pos + CHUNK_SIZE) * 2;
-            char* new_data = new char[capacity];
-            if (pos > 0) {
+            char *new_data = new char[capacity];
+            if (pos > 0)
+            {
                 memcpy(new_data, data, pos);
             }
             delete[] data;
             data = new_data;
         }
-        
+
         char ch;
         cin.get(ch);
-        
-        if (ch == '\n') {
+
+        if (ch == '\n')
+        {
             break;
         }
-        
+
         data[pos++] = ch;
     }
-    
+
     data[pos] = '\0';
-    length = pos;
+    length = pos + 1;
 }
 
 size_t MyString::get_length() const
