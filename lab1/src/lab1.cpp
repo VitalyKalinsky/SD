@@ -573,7 +573,7 @@ int main()
      */
 
     {
-        int line_width = 3;
+        int line_width = 40;
         MyString input;
         input.read_line();
         TextWrapper wrapper(input, line_width);
@@ -678,6 +678,9 @@ int main()
      * вы сделали.
      *
      * 1: https://www.gnu.org/software/make/manual/html_node/index.html
+     * 2. Добавил переменные, чтобы было легче менять в случае рефакторинга папок (ну и так красивее как-то, меньше риск ошибки)
+     * 3. Сделал шаблон для .o файлов, чтобы не писать для каждого нового файла в makefile дополнительных строк
+     * 4. Сильно сократил код благодаря wildcard, patsubst и filter-out
      */
 
     /**
