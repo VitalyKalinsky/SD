@@ -4,7 +4,9 @@ using namespace std;
 
 Rect::Rect()
 {
+#ifndef NDEBUG
     cout << "Constructor_def called for " << this << endl;
+#endif
     left = 0;
     right = 0;
     top = 0;
@@ -13,7 +15,9 @@ Rect::Rect()
 
 Rect::Rect(int l, int r, int t, int b)
 {
+#ifndef NDEBUG
     cout << "Constructor_four called for " << this << endl;
+#endif
     left = l;
     right = r;
     top = t;
@@ -22,7 +26,9 @@ Rect::Rect(int l, int r, int t, int b)
 
 Rect::Rect(const Rect &other)
 {
+#ifndef NDEBUG
     cout << "Constructor_copy called for " << this << endl;
+#endif
     left = other.left;
     right = other.right;
     top = other.top;
@@ -31,7 +37,9 @@ Rect::Rect(const Rect &other)
 
 Rect::~Rect()
 {
+#ifndef NDEBUG
     cout << "Destructor called for " << this << endl;
+#endif
 }
 int Rect::get_left() const { return left; }
 int Rect::get_right() const { return right; }
