@@ -15,28 +15,27 @@ public:
     Rect(const Rect &other);
     ~Rect();
 
-    int get_left() const;
-    int get_right() const;
-    int get_top() const;
-    int get_bottom() const;
+    inline int get_left() const { return left; }
+    inline int get_right() const { return right; }
+    inline int get_top() const { return top; }
+    inline int get_bottom() const { return bottom; }
 
     void set_all(int left, int right, int top, int bottom);
 
-    void inflate(int amount);
-    void inflate(int dw, int dh);
+    inline void inflate(int amount) { this->inflate(amount, amount, amount, amount); }
+    inline void inflate(int dw, int dh) { this->inflate(dw, dw, dh, dh); }
     void inflate(int d_left, int d_right, int d_top, int d_bottom);
 
     void move(int dx = 0, int dy = 0);
 
-    int get_width() const;
-    int get_height() const;
-    int get_square() const;
+    inline int get_width() const { return right - left; }
+    inline int get_height() const { return top - bottom; }
+    inline int get_square() const { return get_width() * get_height(); }
 
     void set_width(int new_width);
     void set_height(int new_height);
 };
 
 Rect bounding_rect(Rect r1, Rect r2);
-
 void print_rect(Rect &r);
 #endif

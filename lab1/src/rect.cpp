@@ -41,10 +41,6 @@ Rect::~Rect()
     cout << "Destructor called for " << this << endl;
 #endif
 }
-int Rect::get_left() const { return left; }
-int Rect::get_right() const { return right; }
-int Rect::get_top() const { return top; }
-int Rect::get_bottom() const { return bottom; }
 
 void Rect::set_all(int left, int right, int top, int bottom)
 {
@@ -52,16 +48,6 @@ void Rect::set_all(int left, int right, int top, int bottom)
     this->right = right;
     this->top = top;
     this->bottom = bottom;
-}
-
-void Rect::inflate(int amount)
-{
-    this->inflate(amount, amount, amount, amount);
-}
-
-void Rect::inflate(int dw, int dh)
-{
-    this->inflate(dw, dw, dh, dh);
 }
 
 void Rect::inflate(int d_left, int d_right, int d_top, int d_bottom)
@@ -78,21 +64,6 @@ void Rect::move(int dx, int dy)
     right += dx;
     top += dy;
     bottom += dy;
-}
-
-int Rect::get_width() const
-{
-    return right - left;
-}
-
-int Rect::get_height() const
-{
-    return top - bottom;
-}
-
-int Rect::get_square() const
-{
-    return get_width() * get_height();
 }
 
 void Rect::set_width(int new_width)
