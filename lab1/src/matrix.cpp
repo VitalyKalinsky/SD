@@ -1,11 +1,13 @@
 #include "matrix.hpp"
-#include <cassert>
 #include <iostream>
 using namespace std;
 
 Matrix::Matrix(int m, int n, double fill_value)
 {
-    assert(n > 0 && m > 0);
+    if (m <= 0 || n <= 0)
+    {
+        throw MatrixSizeException("Размеры матрицы должны быть положительными");
+    }
     rows = m;
     cols = n;
     data = new double *[m];
@@ -21,7 +23,10 @@ Matrix::Matrix(int m, int n, double fill_value)
 
 Matrix::Matrix(int n)
 {
-    assert(n > 0);
+    if (n <= 0)
+    {
+        throw MatrixSizeException("Размер матрицы должен быть положительным");
+    }
     rows = n;
     cols = n;
     data = new double *[n];
@@ -95,7 +100,10 @@ void Matrix::set(int i, int j, double value)
 
 void Matrix::add_in_place(Matrix &other)
 {
-    assert(rows == other.rows && cols == other.cols);
+    if (rows != other.rows || cols != other.cols)
+    {
+        throw MatrixSizeException("Несовместимые размеры для сложения");
+    }
 
     for (int i = 0; i < rows; i++)
     {
@@ -120,8 +128,9 @@ Matrix Matrix::multiply(Matrix &other)
 {
     if (cols != other.rows)
     {
-        return Matrix(0, 0);
+        throw MatrixSizeException("Несовместимые размеры для умножения");
     }
+
     Matrix result(rows, other.cols, 0.0);
     for (int i = 0; i < rows; i++)
     {

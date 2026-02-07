@@ -575,6 +575,7 @@ int main()
     {
         int line_width = 40;
         MyString input;
+        cout << "Введите строку: ";
         input.read_line();
         TextWrapper wrapper(input, line_width);
         wrapper.print_wrapped();

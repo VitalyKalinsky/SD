@@ -1,5 +1,11 @@
 #ifndef MATRIX_HPP
 #define MATRIX_HPP
+#include <stdexcept>
+class MatrixSizeException : public std::runtime_error
+{
+public:
+    MatrixSizeException(const char *msg) : std::runtime_error(msg) {}
+};
 
 class Matrix
 {

@@ -4,10 +4,14 @@
 class Rect
 {
 private:
-    int left;
-    int right;
-    int top;
-    int bottom;
+    // int left;
+    // int right;
+    // int top;
+    // int bottom;
+    int x;
+    int y;
+    int width;
+    int height;
 
 public:
     Rect();
@@ -15,10 +19,14 @@ public:
     Rect(const Rect &other);
     ~Rect();
 
-    inline int get_left() const { return left; }
-    inline int get_right() const { return right; }
-    inline int get_top() const { return top; }
-    inline int get_bottom() const { return bottom; }
+    // inline int get_left() const { return left; }
+    // inline int get_right() const { return right; }
+    // inline int get_top() const { return top; }
+    // inline int get_bottom() const { return bottom; }
+    inline int get_left() const { return x; }
+    inline int get_right() const { return x + width; }
+    inline int get_top() const { return y + height; }
+    inline int get_bottom() const { return y; }
 
     void set_all(int left, int right, int top, int bottom);
 
@@ -28,9 +36,12 @@ public:
 
     void move(int dx = 0, int dy = 0);
 
-    inline int get_width() const { return right - left; }
-    inline int get_height() const { return top - bottom; }
-    inline int get_square() const { return get_width() * get_height(); }
+    // inline int get_width() const { return right - left; }
+    // inline int get_height() const { return top - bottom; }
+    // inline int get_square() const { return get_width() * get_height(); }
+    inline int get_width() const { return width; }
+    inline int get_height() const { return height; }
+    inline int get_square() const { return width * height; }
 
     void set_width(int new_width);
     void set_height(int new_height);

@@ -4,7 +4,7 @@
 #include <cstdio>
 using namespace std;
 TextWrapper::TextWrapper(const MyString &input, int width)
-    : input_text(input), max_line_length(width), words(nullptr)
+    : input_text(input), max_line_length(width), words(nullptr), word_count(0)
 {
 
     if (max_line_length <= 0)

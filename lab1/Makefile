@@ -30,6 +30,7 @@ debug: $(BUILD_DIR)/debug.out
 
 # leaks
 $(BUILD_DIR)/leaks.out: $(MAIN_FILE) $(OBJECTS)
+	@mkdir -p $(BUILD_DIR)
 	g++ -fsanitize=address -o $@ $^
 
 leaks: $(BUILD_DIR)/leaks.out
@@ -58,3 +59,15 @@ test_bounding_rect: $(BUILD_DIR)/test_bounding_rect.out
 
 test: test_rect_basic_methods test_rect_operations test_bounding_rect test_rect_properties
 	@echo "Все тесты успешно пройдены!"
+
+
+# launch
+$(BUILD_DIR)/launch.out: $(MAIN_FILE) $(DEBUG_OBJECTS)
+	g++ -g -o $@ $^
+
+launch: $(BUILD_DIR)/launch.out
+	./$<
+
+# чистка
+clean:
+	rm -rf $(BUILD_DIR)
