@@ -74,3 +74,5 @@ launch: $(BUILD_DIR)/launch.out
 # чистка
 clean:
 	rm -rf $(BUILD_DIR)
+zip:
+	zip -r "Калинский Виталий 5130201_50302" ./ -x "build/*"
