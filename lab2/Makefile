@@ -2,7 +2,7 @@ SRC_DIR = src
 BUILD_DIR = build
 TESTS_DIR = tests
 
-MAIN_FILE = $(SRC_DIR)/lab1.cpp
+MAIN_FILE = $(SRC_DIR)/lab2.cpp
 SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
 
 OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(filter-out $(MAIN_FILE),$(SOURCES)))
@@ -66,6 +66,7 @@ test: test_rect_basic_methods test_rect_operations test_bounding_rect test_rect_
 
 # launch
 $(BUILD_DIR)/launch.out: $(MAIN_FILE) $(DEBUG_OBJECTS)
+	@mkdir -p build
 	g++ -g -o $@ $^
 
 launch: $(BUILD_DIR)/launch.out

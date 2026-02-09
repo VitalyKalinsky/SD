@@ -14,7 +14,13 @@
  * стандартной библиотеки и нужно следовать принципам инкапсуляции.
  */
 
-int main() {
+#include "mystring.hpp"
+#include "basefile.hpp"
+#include <iostream>
+#include <cstring>
+using namespace std;
+int main()
+{
     /**
      * Задание 1. Массивы объектов класса.
      */
@@ -26,9 +32,13 @@ int main() {
      * Выведите элементы массива на консоль.
      */
 
-    /* {
-        MyString ar[3] = { ... };
-    } */
+    {
+        MyString ar[3] = {"hello", "vitalya", "laba 2 proga"};
+        for (int i = 0; i < 3; i++)
+        {
+            printf("%s\n", ar[i].c_str());
+        }
+    }
 
     /**
      * Замените размер массива с 3 на 5, не меняя список инициализаторов.
@@ -36,13 +46,31 @@ int main() {
      * Чем были инициализированы последние 2 элемента? Какие значения могут
      * стоять в списке инициализаторов - в вашем случае и в общем случае?
      */
-
+    {
+        printf("\n");
+        MyString ar[5] = {"hello", "vitalya", "laba 2 proga"};
+        for (int i = 0; i < 5; i++)
+        {
+            printf("%s\n", ar[i].c_str());
+        }
+    }
+    printf("-----------------\n");
     /**
      * Задание 1.2. Массив указателей на объекты.
      *
      * Объявите и проинициализируйте массив arPtr из трех указателей на объекты
      * типа MyString. Выведите элементы массива на консоль.
      */
+    {
+        MyString *arPtr[3] = {new MyString("1t"),
+                              new MyString("2d"),
+                              new MyString("3d")};
+        for (int i = 0; i < 3; i++)
+        {
+            printf("%s\n", arPtr[i]->c_str());
+            delete arPtr[i];
+        }
+    }
 
     /**
      * Задание 2. Простое наследование. Аргументы конструктора, передаваемые в
@@ -88,6 +116,100 @@ int main() {
      *
      * Проверьте работу этого класса.
      */
+
+    // тест конструктора по умолчанию и с именем файла
+    {
+        BaseFile file1;
+        BaseFile file2("test1.txt", "w");
+        if (!file1.is_open() && file2.is_open())
+        {
+            printf("OK\n");
+            file2.close();
+            remove("test1.txt");
+        }
+        else
+        {
+            printf("FAIL\n");
+        }
+    }
+
+    // тест чтения-записи
+    {
+        {
+            BaseFile writer("test2.txt", "wb");
+            const char *data1 = "Hello";
+            const char *data2 = " World";
+            writer.write(data1, strlen(data1));
+            writer.write(data2, strlen(data2));
+        }
+
+        {
+            BaseFile reader("test2.txt", "rb");
+            char buffer[20];
+            size_t read = reader.read(buffer, sizeof(buffer));
+            buffer[read] = '\0';
+
+            if (strcmp(buffer, "Hello World") == 0)
+            {
+                printf("OK\n");
+            }
+            else
+            {
+                printf("FAIL\n");
+            }
+        }
+        remove("test2.txt");
+    }
+
+    // тест tell и seek
+    {
+        BaseFile file("test3.txt", "w+b");
+        file.write("0123456789", 10);
+
+        file.seek(3);
+        if (file.tell() == 3)
+        {
+            char buf[4];
+            file.read(buf, 3);
+            buf[3] = '\0';
+            if (strcmp(buf, "345") == 0)
+            {
+                printf("OK\n");
+            }
+            else
+            {
+                printf("FAIL\n");
+            }
+        }
+        else
+        {
+            printf("FAIL\n");
+        }
+        remove("test3.txt");
+    }
+
+    // тест is_open & can_write
+    {
+        BaseFile file("test4.txt", "w+");
+        if (file.is_open() && file.can_write())
+        {
+            file.write("test", 4);
+            file.seek(0);
+            if (file.can_read())
+            {
+                printf("OK\n");
+            }
+            else
+            {
+                printf("FAIL\n");
+            }
+        }
+        else
+        {
+            printf("FAIL\n");
+        }
+        remove("test4.txt");
+    }
 
     /**
      * Задание 2.2. Производные классы.
@@ -237,10 +359,10 @@ int main() {
      */
 
     /* {
-        BaseFile *files[] = { 
-            new BaseFile(...), 
-            new RleFile(...), 
-            new Base32File(...), 
+        BaseFile *files[] = {
+            new BaseFile(...),
+            new RleFile(...),
+            new Base32File(...),
         };
 
         for (int i = 0; i < 3; ++i) {
@@ -351,7 +473,6 @@ int main() {
      */
 
     {
-
     }
 
     /**
@@ -374,7 +495,6 @@ int main() {
      */
 
     {
-
     }
 
     return 0;
