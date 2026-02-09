@@ -12,6 +12,9 @@ USER_INPUT = $(SRC_DIR)/data
 TEST_SOURCES = $(wildcard $(TESTS_DIR)/*.cpp)
 TEST_TARGETS = $(patsubst $(TESTS_DIR)/%.cpp,$(BUILD_DIR)/%.out,$(TEST_SOURCES))
 
+$(SRC_DIR)/textwrapper.hpp: $(SRC_DIR)/mystring.hpp
+	touch $@
+	
 # правило для сборки объектных файлов
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp $(SRC_DIR)/%.hpp
 	@mkdir -p build

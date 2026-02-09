@@ -57,7 +57,7 @@ void Matrix::copy(const Matrix &other)
     }
 }
 
-Matrix::Matrix(const Matrix &other)
+Matrix::Matrix(const Matrix &other): data(0)
 {
     copy(other);
 }

@@ -32,11 +32,12 @@ void MyString::copy_from(const char *str, size_t len)
 
 MyString::MyString() : data(nullptr), length(0), capacity(0)
 {
-    reallocate(16);
-    data[0] = '\0';
+    // TODO: не выделять память (nullptr или &length?)
+    // reallocate(16);
+    // data[0] = '\0';
 }
 
-MyString::MyString(const char *str) : data(nullptr), length(0), capacity(0)
+MyString::MyString(const char *str) : MyString()
 {
     if (str != nullptr)
     {
@@ -44,14 +45,14 @@ MyString::MyString(const char *str) : data(nullptr), length(0), capacity(0)
         reallocate(length + 1);
         strcpy(data, str);
     }
-    else
-    {
-        reallocate(16);
-        data[0] = '\0';
-    }
+    // else
+    // {
+    //     reallocate(16);
+    //     data[0] = '\0';
+    // }
 }
 
-MyString::MyString(const MyString &other) : data(nullptr), length(0), capacity(0)
+MyString::MyString(const MyString &other) : MyString()
 {
     if (other.data != nullptr)
     {
@@ -59,11 +60,11 @@ MyString::MyString(const MyString &other) : data(nullptr), length(0), capacity(0
         reallocate(other.capacity);
         strcpy(data, other.data);
     }
-    else
-    {
-        reallocate(16);
-        data[0] = '\0';
-    }
+    // else
+    // {
+    //     reallocate(16);
+    //     data[0] = '\0';
+    // }
 }
 
 MyString::~MyString()
@@ -109,6 +110,8 @@ void MyString::set(int i, char c)
     {
         return;
     }
+    reallocate(16);
+    data[0] = '\0';
     data[i] = c;
 }
 
@@ -120,30 +123,39 @@ void MyString::set_new_string(const char *str)
         length = 0;
         return;
     }
-
-    size_t new_length = strlen(str);
-    if (new_length + 1 <= capacity)
+    if (data == nullptr)
     {
-        strcpy(data, str);
-        length = new_length;
-    }
-    else
-    {
-        delete[] data;
-        length = new_length;
-        capacity = length + 1;
-        data = new char[capacity];
-        strcpy(data, str);
+        reallocate(16);
+        data[0] = '\0';
+        size_t new_length = strlen(str);
+        if (new_length + 1 <= capacity)
+        {
+            strcpy(data, str);
+            length = new_length;
+        }
+        else
+        {
+            delete[] data;
+            length = new_length;
+            capacity = length + 1;
+            data = new char[capacity];
+            strcpy(data, str);
+        }
     }
 }
 
 void MyString::print() const
-{
-    cout << data << endl;
+{    
+    cout << c_str() << endl;
 }
 
 void MyString::read_line()
 {
+    if (data == nullptr)
+    {
+        reallocate(16);
+        data[0] = '\0';
+    }
     const size_t INITIAL_CAPACITY = 16;
     const size_t CHUNK_SIZE = 256;
 
