@@ -30,9 +30,6 @@ public:
     bool seek(long offset);
 
     bool close();
-    bool open(const char *filename, const char *mode);
-
-    const char *get_open_mode() const;
 };
 
 #endif

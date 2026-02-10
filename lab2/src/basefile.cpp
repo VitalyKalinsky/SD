@@ -1,5 +1,6 @@
 #include "BaseFile.hpp"
 #include <cstring>
+#include <cstdio>
 
 BaseFile::BaseFile() : file_ptr(nullptr), open_mode(nullptr) {}
 
@@ -32,6 +33,12 @@ bool BaseFile::can_read() const
     if (!is_open())
         return false;
 
+    if (open_mode)
+    {
+        return strchr(open_mode, 'r') != nullptr ||
+               strchr(open_mode, '+') != nullptr;
+    }
+
     long current_pos = ftell(file_ptr);
     if (current_pos == -1L)
         return false;
@@ -45,26 +52,23 @@ bool BaseFile::can_read() const
     return current_pos < end_pos;
 }
 
-bool BaseFile::can_write() const {
-    if (!is_open()) return false;
-    
-    if (!open_mode) {
-        
-        long pos = ftell(file_ptr);
-        if (pos == -1L) return false;
-        
-        if (fwrite("", 1, 0, file_ptr) != 0) {
-            return true;  
-        }
-        clearerr(file_ptr);
+bool BaseFile::can_write() const
+{
+    if (!is_open())
+    {
+        printf("file is closed. cannot write\n");
         return false;
     }
-    
-    return strchr(open_mode, 'w') != nullptr || 
-           strchr(open_mode, 'a') != nullptr || 
-           strchr(open_mode, '+') != nullptr;
-}
 
+    if (open_mode)
+    {
+        return strchr(open_mode, 'w') != nullptr ||
+               strchr(open_mode, 'a') != nullptr ||
+               strchr(open_mode, '+') != nullptr;
+    }
+
+    return false;
+}
 
 size_t BaseFile::write_raw(const void *buf, size_t n_bytes)
 {
@@ -129,15 +133,4 @@ bool BaseFile::close()
         return (result == 0);
     }
     return true;
-}
-bool BaseFile::open(const char *filename, const char *mode)
-{
-    close();
-
-    if (filename && mode)
-    {
-        file_ptr = fopen(filename, mode);
-    }
-
-    return is_open();
 }

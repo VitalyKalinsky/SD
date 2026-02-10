@@ -16,8 +16,11 @@
 
 #include "mystring.hpp"
 #include "basefile.hpp"
+#include "base32file.hpp"
 #include <iostream>
 #include <cstring>
+#include <cstdio>
+
 using namespace std;
 int main()
 {
@@ -71,6 +74,7 @@ int main()
             delete arPtr[i];
         }
     }
+    printf("-----------------\n");
 
     /**
      * Задание 2. Простое наследование. Аргументы конструктора, передаваемые в
@@ -210,6 +214,7 @@ int main()
         }
         remove("test4.txt");
     }
+    printf("-----------------\n");
 
     /**
      * Задание 2.2. Производные классы.
@@ -250,7 +255,20 @@ int main()
      * Добавьте возможность пользователю передать в конструктор таблицу
      * кодировки, по умолчанию используется таблица "A..Z1..6".
      */
-
+    {
+        const char *user_chars = "QWERTYUIOPASDFGHJKLZXCVBNM123456";
+        FILE *file_write = fopen("build/hello_world.txt", "wb");
+        Base32File writer(file_write); // default constrictor
+        writer.write("Hello", 5);
+        writer.write(" World", 6);
+        writer.close();
+        FILE *file_read = fopen("build/hello_world.txt", "rb");
+        Base32File reader(file_read);
+        char buffer[20];
+        size_t read = reader.read(buffer, sizeof(buffer));
+        buffer[read] = '\0';
+        cout << buffer << endl;
+    }
     /**
      * Задание 2.2.2. RLE-сжатие.
      *
