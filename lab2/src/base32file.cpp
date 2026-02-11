@@ -25,9 +25,22 @@ Base32File::Base32File() : BaseFile(), ENCODING_CHARS(DEFAULT_ENC_CHARS) {}
 Base32File::Base32File(const char *filename, const char *mode, const char *user_enc_chars) : BaseFile(filename, mode)
 {
     if (strlen(user_enc_chars) == 32)
+    {
         ENCODING_CHARS = user_enc_chars;
+        for (int i = 0; i < 32; i++)
+        {
+            for (int j = i + 1; j < 32; j++)
+            {
+                if (user_enc_chars[i] == user_enc_chars[j])
+                {
+                    ENCODING_CHARS = DEFAULT_ENC_CHARS;
+                }
+            }
+        }
+    }
     else
         ENCODING_CHARS = DEFAULT_ENC_CHARS;
+    printf("initialised Base32File with filename='%s', mode='%s', encoding_chars='%s'\n", filename, mode, ENCODING_CHARS);
 }
 Base32File::Base32File(FILE *fp) : BaseFile(fp), ENCODING_CHARS(DEFAULT_ENC_CHARS) {}
 
@@ -72,7 +85,6 @@ int Base32File::decode32(const char *encoded_data, int encoded_size, char *dst)
     int cur_dst_index = 0;    // индекс dst
     for (int byte = 0; byte < encoded_size; byte++)
     {
-        cout << encoded_data[byte];
         bool in_alphabet = false;
         for (int i = 0; i < 32; i++)
             in_alphabet = in_alphabet || encoded_data[byte] == ENCODING_CHARS[i];

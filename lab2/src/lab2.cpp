@@ -256,16 +256,16 @@ int main()
      * кодировки, по умолчанию используется таблица "A..Z1..6".
      */
     {
-        Base32File writer("build/hello_world.txt", "wb"); // 3 param constrictor
+        const char *user_encoding_chars = "QWERTYUIOPASDFGHJKLZXCVBNM123456";
+        Base32File writer("build/hello_world.txt", "wb", user_encoding_chars); // 3 param constrictor
         const char *hello = "Hello";
         const char *world = " World!!";
-        writer.write(hello, 5);
-        writer.write(world, 8);
+        writer.write(hello, strlen(hello));
+        writer.write(world, strlen(world));
         writer.close();
-        FILE *file_read = fopen("build/hello_world.txt", "rb");
-        Base32File reader(file_read);
-        char buffer[13];
-        size_t read = reader.read(buffer, 12);
+        Base32File reader("build/hello_world.txt", "rb", user_encoding_chars);
+        char buffer[strlen(hello) + strlen(world) + 1];
+        size_t read = reader.read(buffer, strlen(hello) + strlen(world));
         buffer[read] = '\0';
         cout << buffer << endl;
     }
