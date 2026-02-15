@@ -6,15 +6,6 @@ class Base32File : public BaseFile
 {
 private:
     const char *ENCODING_CHARS;
-
-public:
-    Base32File();
-    Base32File(const char *filename, const char *mode, const char *user_enc_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456");
-    Base32File(FILE *fp);
-
-    size_t write(const void *buf, size_t n_bytes);
-    size_t read(void *buf, size_t n_bytes);
-
     const char *get_encoding_chars()
     {
         return ENCODING_CHARS;
@@ -29,6 +20,13 @@ public:
     }
     int encode32(const char *raw_data, int raw_size, char *dst);
     int decode32(const char *encoded_data, int encoded_size, char *dst);
+public:
+    Base32File();
+    Base32File(const char *filename, const char *mode, const char *user_enc_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456");
+    Base32File(FILE *fp);
+
+    size_t write(const void *buf, size_t n_bytes);
+    size_t read(void *buf, size_t n_bytes);
 };
 
 #endif
