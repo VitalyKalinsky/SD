@@ -17,6 +17,7 @@
 #include "mystring.hpp"
 #include "basefile.hpp"
 #include "base32file.hpp"
+#include "rlefile.hpp"
 #include <iostream>
 #include <cstring>
 #include <cstdio>
@@ -269,6 +270,7 @@ int main()
         buffer[read] = '\0';
         cout << buffer << endl;
     }
+    printf("-----------------\n");
     /**
      * Задание 2.2.2. RLE-сжатие.
      *
@@ -290,7 +292,52 @@ int main()
      * например, котенка из лабораторной №3 прошлого семестра. Посмотрите,
      * получилось ли добиться уменьшения размера хранимых данных.
      */
+    {
+        const char *filename = "compressed_art.bin";
 
+        const char *ascii_art =
+            "             /\\_/\\  (\n"
+            "            ( ^.^ ) _)\n"
+            "              \\\"/  (\n"
+            "            ( | | )\n"
+            "           (__d b__)\n";
+
+        size_t original_size = strlen(ascii_art);
+        printf("Исходный размер: %zu байт\n", original_size);
+        printf("Исходный ASCII Art:\n%s", ascii_art);
+        {
+            RleFile rle_file(filename, "wb");
+            size_t written = rle_file.write(ascii_art, original_size);
+            printf("Записано: %ld байт\n", written);
+        }
+        {
+            FILE *f = fopen(filename, "rb");
+            if (f)
+            {
+                fseek(f, 0, SEEK_END);
+                long compressed_size = ftell(f);
+                fclose(f);
+                printf("Сжатый размер: %ld байт\n", compressed_size);
+                if (original_size > 0)
+                    printf("Коэффициент сжатия: %g%%\n", (compressed_size * 100.0 / original_size));
+            }
+        }
+        {
+            RleFile rle_file(filename, "rb");
+            char buffer[1024] = {0};
+            size_t read_bytes = rle_file.read(buffer, sizeof(buffer) - 1);
+
+            printf("Прочитано: %ld байт\n", read_bytes);
+            printf("Восстановленный ASCII Art:\n%s", buffer);
+
+            if (strcmp(buffer, ascii_art) == 0)
+                printf("Данные совпадают с оригиналом!\n");
+            else
+                printf("Данные не совпадают!\n");
+        }
+
+        remove(filename);
+    }
     /**
      * Задание 2.3. Конструкторы и деструкторы базового и производного классов.
      *
