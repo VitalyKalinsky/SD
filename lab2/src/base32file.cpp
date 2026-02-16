@@ -142,7 +142,7 @@ size_t Base32File::read(void *buf, size_t n_bytes)
 #ifndef NDEBUG
     cout << "enc32_size: " << enc32_size << endl;
     cout << "Декодировано: ";
-    for (int i = 0; i < bytes_read; i++)
+    for (int i = 0; i < n_bytes; i++)
     {
         cout << static_cast<char *>(buf)[i];
     }
