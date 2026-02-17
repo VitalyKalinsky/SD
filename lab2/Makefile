@@ -65,9 +65,9 @@ test: test_rect_basic_methods test_rect_operations test_bounding_rect test_rect_
 
 
 # launch
-$(BUILD_DIR)/launch.out: $(MAIN_FILE) $(DEBUG_OBJECTS)
+$(BUILD_DIR)/launch.out: $(MAIN_FILE) $(OBJECTS)
 	@mkdir -p build
-	g++ -g -o $@ $^
+	g++ -o $@ $^
 
 launch: $(BUILD_DIR)/launch.out
 	./$<
