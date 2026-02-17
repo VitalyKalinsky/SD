@@ -308,19 +308,9 @@ int main()
         {
             RleFile rle_file(filename, "wb");
             size_t written = rle_file.write(ascii_art, original_size);
-            printf("Записано: %ld байт\n", written);
-        }
-        {
-            FILE *f = fopen(filename, "rb");
-            if (f)
-            {
-                fseek(f, 0, SEEK_END);
-                long compressed_size = ftell(f);
-                fclose(f);
-                printf("Сжатый размер: %ld байт\n", compressed_size);
+            printf("Записано (сжатый текст): %ld байт\n", written);
                 if (original_size > 0)
-                    printf("Коэффициент сжатия: %g%%\n", (compressed_size * 100.0 / original_size));
-            }
+                    printf("Коэффициент сжатия: %g%%\n", (written * 100.0 / original_size));
         }
         {
             RleFile rle_file(filename, "rb");

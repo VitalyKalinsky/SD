@@ -80,7 +80,7 @@ size_t RleFile::write(const void *buf, size_t n_bytes)
     MyString compressed = compress(buf, n_bytes);
     size_t written = write_raw(compressed.c_str(), compressed.get_length());
 
-    return (written == compressed.get_length()) ? n_bytes : 0;
+    return (written == compressed.get_length()) ? written : 0;
 }
 
 size_t RleFile::read(void *buf, size_t n_bytes)
