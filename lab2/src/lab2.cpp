@@ -309,8 +309,8 @@ int main()
             RleFile rle_file(filename, "wb");
             size_t written = rle_file.write(ascii_art, original_size);
             printf("Записано (сжатый текст): %ld байт\n", written);
-                if (original_size > 0)
-                    printf("Коэффициент сжатия: %g%%\n", (written * 100.0 / original_size));
+            if (original_size > 0)
+                printf("Коэффициент сжатия: %g%%\n", (written * 100.0 / original_size));
         }
         {
             RleFile rle_file(filename, "rb");
@@ -328,6 +328,7 @@ int main()
 
         remove(filename);
     }
+    printf("-----------------\n");
     /**
      * Задание 2.3. Конструкторы и деструкторы базового и производного классов.
      *
@@ -336,7 +337,55 @@ int main()
      * отметьте, в каком порядке вызываются конструкторы и деструкторы при
      * инициализации и деинициализации этих классов.
      */
+    {
+        const char *filename_b32 = "build/b32.txt";
+        const char *filename_rle = "build/rle.txt";
+        FILE *fb32 = fopen(filename_b32, "wb");
+        FILE *frle = fopen(filename_rle, "wb");
+        Base32File b32_file1;
+        // сначала Constructor_def BaseFile:
+        // Def_Constructor called for BaseFile
+        // Constructor_def called for Base32File
 
+        Base32File b32_file2(filename_b32, "wb");
+        // сначала Full_Constructor BaseFile, затем Full_Constructor Base32File
+        // Full_Constructor called for BaseFile
+        // Full_Constructor called for Base32File
+
+        Base32File b32_file3(fb32);
+        // сначала File_Constructor BaseFile, затем File_Constructor Base32File
+        // File_Constructor called for BaseFile
+        // File_Constructor called for Base32File
+
+        RleFile rle_file1;
+        // сначала Constructor_def BaseFile:
+        // Def_Constructor called for BaseFile
+        // Constructor_def called for RleFile
+
+        RleFile rle_file2(filename_rle, "rb");
+        // сначала Full_Constructor BaseFile, затем Full_Constructor RleFile
+        // Full_Constructor called for BaseFile
+        // Full_Constructor called for RleFile
+
+        RleFile rle_file3(frle);
+        // сначала File_Constructor BaseFile, затем File_Constructor RleFile
+        // File_Constructor called for BaseFile
+        // File_Constructor called for RleFile
+
+        // в обратном порядке. сначала для производного класса, а потом для базового класса
+        // Destructor called for RleFile (для rle_file3)
+        // Destructor called for BaseFile (для базового класса RleFile)
+        // Destructor called for RleFile (для rle_file2)
+        // Destructor called for BaseFile (для базового класса RleFile)
+        // Destructor called for RleFile (для rle_file1)
+        // Destructor called for BaseFile (для базового класса RleFile)
+        // Destructor called for Base32File (для b32_file3)
+        // Destructor called for BaseFile (для базового класса Base32File)
+        // Destructor called for Base32File (для b32_file2)
+        // Destructor called for BaseFile (для базового класса Base32File)
+        // Destructor called for Base32File (для b32_file1)
+        // Destructor called for BaseFile (для базового класса Base32File)
+    }
     /**
      * Задание 2.4. Ранее связывание.
      *

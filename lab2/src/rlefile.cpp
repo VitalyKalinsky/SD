@@ -1,10 +1,32 @@
 #include "RleFile.hpp"
 #include <cstring>
+#include <iostream>
+using namespace std;
 
-RleFile::RleFile() : BaseFile() {}
-RleFile::RleFile(const char *filename, const char *mode) : BaseFile(filename, mode) {}
-RleFile::RleFile(FILE *fp) : BaseFile(fp) {}
-
+RleFile::RleFile() : BaseFile()
+{
+#ifndef NDEBUG
+    cout << "Constructor_def called for RleFile_" << this << endl;
+#endif
+}
+RleFile::RleFile(const char *filename, const char *mode) : BaseFile(filename, mode)
+{
+#ifndef NDEBUG
+    cout << "Full_Constructor called for RleFile_" << this << endl;
+#endif
+}
+RleFile::RleFile(FILE *fp) : BaseFile(fp)
+{
+#ifndef NDEBUG
+    cout << "File_Constructor called for RleFile_" << this << endl;
+#endif
+}
+RleFile::~RleFile()
+{
+#ifndef NDEBUG
+    cout << "Destructor called for RleFile_" << this << endl;
+#endif
+}
 MyString RleFile::compress(const void *buf, size_t n_bytes) const
 {
     const unsigned char *data = static_cast<const unsigned char *>(buf);

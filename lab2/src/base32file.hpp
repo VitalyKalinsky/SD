@@ -24,6 +24,7 @@ public:
     Base32File();
     Base32File(const char *filename, const char *mode, const char *user_enc_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456");
     Base32File(FILE *fp);
+    ~Base32File();
 
     size_t write(const void *buf, size_t n_bytes);
     size_t read(void *buf, size_t n_bytes);

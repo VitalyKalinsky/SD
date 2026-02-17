@@ -21,9 +21,17 @@
  */
 using namespace std;
 const char *const DEFAULT_ENC_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456";
-Base32File::Base32File() : BaseFile(), ENCODING_CHARS(DEFAULT_ENC_CHARS) {}
+Base32File::Base32File() : BaseFile(), ENCODING_CHARS(DEFAULT_ENC_CHARS)
+{
+#ifndef NDEBUG
+    cout << "Constructor_def called for Base32File_" << this << endl;
+#endif
+}
 Base32File::Base32File(const char *filename, const char *mode, const char *user_enc_chars) : BaseFile(filename, mode)
 {
+#ifndef NDEBUG
+    cout << "Full_Constructor called for Base32File_" << this << endl;
+#endif
     if (strlen(user_enc_chars) == 32)
     {
         ENCODING_CHARS = user_enc_chars;
@@ -40,9 +48,20 @@ Base32File::Base32File(const char *filename, const char *mode, const char *user_
     }
     else
         ENCODING_CHARS = DEFAULT_ENC_CHARS;
-    printf("initialised Base32File with filename='%s', mode='%s', encoding_chars='%s'\n", filename, mode, ENCODING_CHARS);
+    printf("filename='%s', mode='%s', encoding_chars='%s'\n", filename, mode, ENCODING_CHARS);
 }
-Base32File::Base32File(FILE *fp) : BaseFile(fp), ENCODING_CHARS(DEFAULT_ENC_CHARS) {}
+Base32File::Base32File(FILE *fp) : BaseFile(fp), ENCODING_CHARS(DEFAULT_ENC_CHARS)
+{
+#ifndef NDEBUG
+    cout << "File_Constructor called for Base32File_" << this << endl;
+#endif
+}
+Base32File::~Base32File()
+{
+#ifndef NDEBUG
+    cout << "Destructor called for Base32File_" << this << endl;
+#endif
+}
 
 int Base32File::encode32(const char *raw_data, int raw_size, char *dst)
 {

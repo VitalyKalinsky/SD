@@ -1,11 +1,21 @@
 #include "BaseFile.hpp"
 #include <cstring>
 #include <cstdio>
+#include <iostream>
+using namespace std;
 
-BaseFile::BaseFile() : file_ptr(nullptr), open_mode(nullptr) {}
+BaseFile::BaseFile() : file_ptr(nullptr), open_mode(nullptr)
+{
+#ifndef NDEBUG
+    cout << "Def_Constructor called for BaseFile_" << this << endl;
+#endif
+}
 
 BaseFile::BaseFile(const char *filename, const char *mode) : file_ptr(nullptr), open_mode(nullptr)
 {
+#ifndef NDEBUG
+    cout << "Full_Constructor called for BaseFile_" << this << endl;
+#endif
     if (filename && mode)
     {
         file_ptr = fopen(filename, mode);
@@ -16,10 +26,18 @@ BaseFile::BaseFile(const char *filename, const char *mode) : file_ptr(nullptr), 
     }
 }
 
-BaseFile::BaseFile(FILE *fp) : file_ptr(fp) {}
+BaseFile::BaseFile(FILE *fp) : file_ptr(fp)
+{
+#ifndef NDEBUG
+    cout << "File_Constructor called for BaseFile_" << this << endl;
+#endif
+}
 
 BaseFile::~BaseFile()
 {
+#ifndef NDEBUG
+    cout << "Destructor called for BaseFile_" << this << endl;
+#endif
     close();
 }
 

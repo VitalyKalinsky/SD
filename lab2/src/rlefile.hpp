@@ -14,6 +14,7 @@ public:
     RleFile();
     RleFile(const char *filename, const char *mode);
     RleFile(FILE *fp);
+    ~RleFile();
     
     size_t write(const void *buf, size_t n_bytes);
     size_t read(void *buf, size_t n_bytes);
