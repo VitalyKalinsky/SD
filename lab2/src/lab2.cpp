@@ -386,6 +386,7 @@ int main()
         // Destructor called for Base32File (для b32_file1)
         // Destructor called for BaseFile (для базового класса Base32File)
     }
+    printf("-----------------\n");
     /**
      * Задание 2.4. Ранее связывание.
      *
@@ -394,7 +395,87 @@ int main()
      * всех файлов, меняя только имя объекта (bf / b32f / rf), в который идет
      * запись.
      */
-
+    {
+        BaseFile bf("build/number_plain.txt", "w");
+        Base32File b32f("build/number_base32.txt", "w");
+        RleFile rf("build/number_rle.txt", "w");
+        int orig_num = 123456;
+        {
+            int n = orig_num;
+            if (n < 0)
+            {
+                n = -n;
+                bf.write("-", 1);
+            }
+            else if (n == 0)
+            {
+                bf.write("0", 1);
+            }
+            else
+            {
+                int d = 1;
+                for (int tmp = n; tmp > 9; tmp /= 10)
+                    d *= 10;
+                while (n > 0)
+                {
+                    char digit = '0' + n / d;
+                    bf.write(&digit, 1);
+                    n %= d;
+                    d /= 10;
+                }
+            }
+        }
+        {
+            int n = orig_num;
+            if (n < 0)
+            {
+                n = -n;
+                rf.write("-", 1);
+            }
+            else if (n == 0)
+            {
+                rf.write("0", 1);
+            }
+            else
+            {
+                int d = 1;
+                for (int tmp = n; tmp > 9; tmp /= 10)
+                    d *= 10;
+                while (n > 0)
+                {
+                    char digit = '0' + n / d;
+                    rf.write(&digit, 1);
+                    n %= d;
+                    d /= 10;
+                }
+            }
+        }
+        {
+            int n = orig_num;
+            if (n < 0)
+            {
+                n = -n;
+                b32f.write("-", 1);
+            }
+            else if (n == 0)
+            {
+                b32f.write("0", 1);
+            }
+            else
+            {
+                int d = 1;
+                for (int tmp = n; tmp > 9; tmp /= 10)
+                    d *= 10;
+                while (n > 0)
+                {
+                    char digit = '0' + n / d;
+                    b32f.write(&digit, 1);
+                    n %= d;
+                    d /= 10;
+                }
+            }
+        }
+    }
     /* {
         BaseFile bf(...);
         Base32File b32f(...);
